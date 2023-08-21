@@ -1,10 +1,11 @@
-import { MongoClient } from "mongodb";
+const { MongoClient } = require("mongodb");
 
 let dbConnection;
 
-const database = {
+module.exports = {
   connectToDb: (cb) => {
-    MongoClient.connect("mongodb://localhost:27017/bookstore")
+    // MongoClient.connect('mongodb://localhost:27017/bookstore') not worked
+    MongoClient.connect("mongodb://127.0.0.1/bookstore")
       .then((client) => {
         dbConnection = client.db();
         return cb();
@@ -16,5 +17,3 @@ const database = {
   },
   getDb: () => dbConnection,
 };
-
-export default database;
