@@ -1,11 +1,19 @@
-const express = require("express");
+import express from "express";
+import database from "./db.js";
 
 //init app & middleware
-
 const app = express();
 
-app.listen(3000, () => {
-  console.log(`app listening on port 3000`);
+//db.connection
+let db;
+
+database.connectToDb((err) => {
+  if (!err) {
+    app.listen(3000, () => {
+      console.log(`app listening on port 3000`);
+    });
+    db = database.getDb();
+  }
 });
 
 //routes
