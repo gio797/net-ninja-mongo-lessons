@@ -51,7 +51,6 @@ app.get("/books/:id", (req, res) => {
 
 app.post("/books", (req, res) => {
   const book = req.body;
-  console.log(book);
 
   db.collection("books")
     .insertOne(book)
@@ -61,4 +60,19 @@ app.post("/books", (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: "Could not create a new document" });
     });
+});
+
+app.delete("/books/:id", (req, res) => {
+  if (ObjectId.isValid(req.params.id)) {
+    db.collection("books")
+      .deleteOne({ _id: new ObjectId(req.params.id) })
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "Could not delete doc" });
+      });
+  } else {
+    res.status(500).json({ error: "not a valid doc id" });
+  }
 });
